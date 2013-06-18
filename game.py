@@ -2,7 +2,7 @@ class Field:
     pass
 
 
-class ShipPart(FieldObject):
+class ShipPart:
     pass
 
 
