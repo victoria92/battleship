@@ -12,8 +12,9 @@ class FieldTest(unittest.TestCase):
         self.assertFalse(field.is_open)
 
     def test_create_field_with_ship_part(self):
-        field = game.Field(game.ShipPart())
-        self.assertEqual(field.content, game.ShipPart())
+        ship_part = game.ShipPart()
+        field = game.Field(ship_part)
+        self.assertEqual(field.content, ship_part) #with isinstance
         self.assertFalse(field.is_open)
 
     def test_open_field(self):
