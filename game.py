@@ -3,7 +3,7 @@ class Field:
     	if(content == ()):
     		self.content = None
     	else:
-    		self.content = content[0]
+    		self.content = content[0] #content[0] is not instance of ShipPart
     	self.is_open = False
 
     def open(self):
@@ -19,7 +19,7 @@ class Ship:
 
 
 class Sea:
-    pass #size, number ships, type
+    pass
 
 
 class Game:

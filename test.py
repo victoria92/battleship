@@ -32,7 +32,19 @@ class Ship(unittest.TestCase):
 
 
 class Sea(unittest.TestCase):
-    pass
+    def test_create_new_sea(self):
+        sea = game.Sea(10)
+        assertEqual(sea.size, 10)
+
+    def test_get_field_content(self):
+        sea = game.Sea(10)
+        assertEqual(sea[3][3], None)
+
+    def test_put_field_content(self):
+        sea = game.Sea(10)
+        ship_part = ShipPart()
+        sea[3][3] = ship_part
+        assertEqual(sea[3][3], ship_part)
 
 
 class Game(unittest.TestCase):
