@@ -19,7 +19,7 @@ class Ship:
 
 
 class Sea:
-    def __init__(self, size):
+    def __init__(self, size=10):
     	self.size = size
     	self.board = [[Field() for i in range(size)] for i in range(size)]
 
@@ -28,6 +28,8 @@ class Sea:
     		raise IndexError
     	return self.board[index]
 
+    def is_valid_coordinates(self, row, column):
+    	return 0 <= row < self.size and 0 <= column < self.size
 
 class Game:
     pass

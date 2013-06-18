@@ -32,18 +32,26 @@ class Ship(unittest.TestCase):
 
 class Sea(unittest.TestCase):
     def test_create_new_sea(self):
-        sea = game.Sea(10)
+        sea = game.Sea()
         self.assertEqual(sea.size, 10)
 
+        sea = game.Sea(20)
+        self.assertEqual(sea.size, 20)
+
     def test_get_field_content(self):
-        sea = game.Sea(10)
+        sea = game.Sea()
         self.assertIsInstance(sea[3][3], game.Field)
 
     def test_put_field_content(self):
-        sea = game.Sea(10)
+        sea = game.Sea()
         ship_part = game.ShipPart()
         sea[3][3] = ship_part
         self.assertEqual(sea[3][3], ship_part)
+
+    def test_validate_coordinates(self):
+        sea = game.Sea()
+        self.assertTrue(sea.is_valid_coordinates(5, 6))
+        self.assertFalse(sea.is_valid_coordinates(15, 6))
 
 
 class Game(unittest.TestCase):
