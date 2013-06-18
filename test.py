@@ -12,9 +12,8 @@ class FieldTest(unittest.TestCase):
         self.assertFalse(field.is_open)
 
     def test_create_field_with_ship_part(self):
-        ship_part = game.ShipPart()
-        field = game.Field(ship_part)
-        self.assertEqual(field.content, ship_part) #with isinstance
+        field = game.Field(game.ShipPart())
+        self.assertIsInstance(field.content, game.ShipPart)
         self.assertFalse(field.is_open)
 
     def test_open_field(self):
@@ -34,17 +33,17 @@ class Ship(unittest.TestCase):
 class Sea(unittest.TestCase):
     def test_create_new_sea(self):
         sea = game.Sea(10)
-        assertEqual(sea.size, 10)
+        self.assertEqual(sea.size, 10)
 
     def test_get_field_content(self):
         sea = game.Sea(10)
-        assertEqual(sea[3][3], None)
+        self.assertIsInstance(sea[3][3], game.Field)
 
     def test_put_field_content(self):
         sea = game.Sea(10)
-        ship_part = ShipPart()
+        ship_part = game.ShipPart()
         sea[3][3] = ship_part
-        assertEqual(sea[3][3], ship_part)
+        self.assertEqual(sea[3][3], ship_part)
 
 
 class Game(unittest.TestCase):
