@@ -10,7 +10,7 @@ class Field:
     	self.is_open = True
 
 
-class ShipPart:
+class ShipPart: #every partto know which is it ship?
     pass
 
 

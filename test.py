@@ -26,11 +26,24 @@ class ShipPartTest(unittest.TestCase):
     pass
 
 
-class Ship(unittest.TestCase):
-    pass
+class ShipTest(unittest.TestCase):
+    def test_create_new_ship(self):
+        sea = game.Sea()
+        ship = game.Ship(3, sea, [1, 3], 0)
+        self.assertEqual(ship.size, 3)
+        self.assertEqual(ship.sea, sea)
+        self.assertEqual(ship.location, [[1, 3], [1, 4], [1, 5]])
+
+    def test_sink(self):
+        sea = game.Sea()
+        ship = game.Ship(3, sea, [1, 3], 0)
+        sea.open(1, 3)
+        sea.open(1, 4)
+        sea.open(1, 5)
+        assertTrue(ship.is_sunk())
 
 
-class Sea(unittest.TestCase):
+class SeaTest(unittest.TestCase):
     def test_create_new_sea(self):
         sea = game.Sea()
         self.assertEqual(sea.size, 10)
@@ -54,7 +67,7 @@ class Sea(unittest.TestCase):
         self.assertFalse(sea.is_valid_coordinates(15, 6))
 
 
-class Game(unittest.TestCase):
+class GameTest(unittest.TestCase):
     pass
 
 if __name__ == '__main__':
