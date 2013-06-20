@@ -68,9 +68,3 @@ class Sea:
                     representation += "X "
             representation += "\n"
         return representation
-
-
-class Game:
-    pass
-
-

@@ -84,9 +84,5 @@ class SeaTest(unittest.TestCase):
         self.assertEqual(sea.represent(), "N X X \nY X X \nX X X \n")
 
 
-
-class GameTest(unittest.TestCase):
-    pass
-
 if __name__ == '__main__':
     unittest.main()
