@@ -55,6 +55,22 @@ class Sea:
     def is_valid_coordinates(self, row, column):
         return 0 <= row < self.size and 0 <= column < self.size
 
+    def represent(self):
+        representation = ""
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.board[i][j].is_open:
+                    if isinstance(self.board[i][j].content, ShipPart):
+                        representation += "Y "
+                    else:
+                        representation += "N "
+                else:
+                    representation += "X "
+            representation += "\n"
+        return representation
+
 
 class Game:
     pass
+
+

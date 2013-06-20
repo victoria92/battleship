@@ -76,6 +76,14 @@ class SeaTest(unittest.TestCase):
         sea = game.Sea()
         self.assertRaises(IndexError, sea.__getitem__, [1, 11])
 
+    def test_representation(self):
+        sea = game.Sea(3)
+        game.Ship(2, sea, [1, 0], 1)
+        sea[[0,0]].open()
+        sea[[1,0]].open()
+        self.assertEqual(sea.represent(), "N X X \nY X X \nX X X \n")
+
+
 
 class GameTest(unittest.TestCase):
     pass
