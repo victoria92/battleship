@@ -24,7 +24,7 @@ class Ship:
             self.location = [[start[0], start[1] + x] for x in range(size)]
 
     def is_sunk(self):
-        pass
+        return all([self.sea[coords].is_open for coords in self.location])
 
 
 class Sea:
