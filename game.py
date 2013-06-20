@@ -11,7 +11,8 @@ class Field:
 
 
 class ShipPart: #every part to know which is it ship?
-    pass
+    def __init__(self, ship):
+        self.ship = ship
 
 
 class Ship:
@@ -22,6 +23,8 @@ class Ship:
             self.location = [[start[0] + x, start[1]] for x in range(size)]
         else:
             self.location = [[start[0], start[1] + x] for x in range(size)]
+        for coords in self.location:
+            sea[coords] = Field(ShipPart(self))
 
     def is_sunk(self):
         return all([self.sea[coords].is_open for coords in self.location])
