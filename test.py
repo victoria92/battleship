@@ -21,6 +21,9 @@ class FieldTest(unittest.TestCase):
         field.open()
         self.assertTrue(field.is_open)
 
+    def test_with_wrong_parameters(self):
+        self.assertRaises(TypeError, game.Field, 1)
+
 
 class ShipPartTest(unittest.TestCase):
     def is_right_initialized(self):
@@ -68,6 +71,10 @@ class SeaTest(unittest.TestCase):
         sea = game.Sea()
         self.assertTrue(sea.is_valid_coordinates(5, 6))
         self.assertFalse(sea.is_valid_coordinates(15, 6))
+
+    def test_raise_index_error(self):
+        sea = game.Sea()
+        self.assertRaises(IndexError, sea.__getitem__, [1, 11])
 
 
 class GameTest(unittest.TestCase):

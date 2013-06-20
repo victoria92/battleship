@@ -3,14 +3,17 @@ class Field:
         if content == ():
             self.content = None
         else:
-            self.content = content[0] #content[0] is not instance of ShipPart
+            if isinstance(content[0], ShipPart):
+                self.content = content[0]
+            else:
+                raise TypeError
         self.is_open = False
 
     def open(self):
         self.is_open = True
 
 
-class ShipPart: #every part to know which is it ship?
+class ShipPart:
     def __init__(self, ship):
         self.ship = ship
 
