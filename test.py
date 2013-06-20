@@ -37,10 +37,10 @@ class ShipTest(unittest.TestCase):
     def test_sink(self):
         sea = game.Sea()
         ship = game.Ship(3, sea, [1, 3], 0)
-        sea.open(1, 3)
-        sea.open(1, 4)
-        sea.open(1, 5)
-        assertTrue(ship.is_sunk())
+        sea[[1, 3]].open()
+        sea[[1, 4]].open()
+        sea[[1, 5]].open()
+        self.assertTrue(ship.is_sunk())
 
 
 class SeaTest(unittest.TestCase):
@@ -53,13 +53,13 @@ class SeaTest(unittest.TestCase):
 
     def test_get_field_content(self):
         sea = game.Sea()
-        self.assertIsInstance(sea[3][3], game.Field)
+        self.assertIsInstance(sea[[3, 3]], game.Field)
 
     def test_put_field_content(self):
         sea = game.Sea()
         ship_part = game.ShipPart()
-        sea[3][3] = ship_part
-        self.assertEqual(sea[3][3], ship_part)
+        sea[[3, 3]] = ship_part
+        self.assertEqual(sea[[3, 3]], ship_part)
 
     def test_validate_coordinates(self):
         sea = game.Sea()

@@ -1,35 +1,54 @@
 class Field:
     def __init__(self, *content):
-    	if content == ():
-    		self.content = None
-    	else:
-    		self.content = content[0] #content[0] is not instance of ShipPart
-    	self.is_open = False
+        if content == ():
+            self.content = None
+        else:
+            self.content = content[0] #content[0] is not instance of ShipPart
+        self.is_open = False
 
     def open(self):
-    	self.is_open = True
+        self.is_open = True
 
 
-class ShipPart: #every partto know which is it ship?
+class ShipPart: #every part to know which is it ship?
     pass
 
 
 class Ship:
-    pass
+    def __init__(self, size, sea, start, direction):
+        self.size = size
+        self.sea = sea
+        if direction:
+            self.location = [[start[0] + x, start[1]] for x in range(size)]
+        else:
+            self.location = [[start[0], start[1] + x] for x in range(size)]
+
+    def is_sunk(self):
+        pass
 
 
 class Sea:
     def __init__(self, size=10):
-    	self.size = size
-    	self.board = [[Field() for i in range(size)] for i in range(size)]
+        self.size = size
+        self.board = [[Field() for i in range(size)] for i in range(size)]
 
     def __getitem__(self, index):
-    	if index < 0 or index >= self.size:
-    		raise IndexError
-    	return self.board[index]
+        if index[0] < 0 or index[0] >= self.size:
+            raise IndexError
+        if index[1] < 0 or index[1] >= self.size:
+            raise IndexError
+        return self.board[index[0]][index[1]]
+
+    def __setitem__(self, index, value):
+        if index[0] < 0 or index[0] >= self.size:
+            raise IndexError
+        if index[1] < 0 or index[1] >= self.size:
+            raise IndexError
+        self.board[index[0]][index[1]] = value
 
     def is_valid_coordinates(self, row, column):
-    	return 0 <= row < self.size and 0 <= column < self.size
+        return 0 <= row < self.size and 0 <= column < self.size
+
 
 class Game:
     pass
