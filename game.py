@@ -1,3 +1,7 @@
+class FullSquareError(Exception):
+    pass
+
+
 class Field:
     def __init__(self, *content):
         if content == ():
@@ -26,6 +30,9 @@ class Ship:
             self.location = [[start[0] + x, start[1]] for x in range(size)]
         else:
             self.location = [[start[0], start[1] + x] for x in range(size)]
+        for coords in self.location:
+            if isinstance(sea[coords].content, ShipPart):
+                raise FullSquareError
         for coords in self.location:
             sea[coords] = Field(ShipPart(self))
 

@@ -48,6 +48,11 @@ class ShipTest(unittest.TestCase):
         sea[[1, 5]].open()
         self.assertTrue(ship.is_sunk())
 
+    def test_full_square(self):
+        sea = game.Sea()
+        ship = game.Ship(3, sea, [1, 3], 0)
+        self.assertRaises(game.FullSquareError, game.Ship, 3, sea, [1, 3], 0)
+
 
 class SeaTest(unittest.TestCase):
     def test_create_new_sea(self):
