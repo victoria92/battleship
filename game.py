@@ -1,3 +1,6 @@
+import pygame
+
+
 class FullSquareError(Exception):
     pass
 
@@ -22,8 +25,9 @@ class ShipPart:
         self.ship = ship
 
 
-class Ship:
+class Ship(pygame.sprite.Sprite):
     def __init__(self, size, sea, start, direction):
+        pygame.sprite.Sprite.__init__(self)
         self.size = size
         self.sea = sea
         if direction:
