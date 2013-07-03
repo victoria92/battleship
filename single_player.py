@@ -7,6 +7,9 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+gray = (100, 100, 100)
+orange = (255, 165, 0)
+dark_blue = (0, 0, 128)
 
 size = 20
 margin = 3
@@ -35,13 +38,16 @@ def draw_board():
     color = blue
     for row in range(10):
         for column in range(10):
-            if sea1[[row, column]].is_open:
-                if isinstance(sea1[[row, column]].content, player.game.ShipPart):
-                    color = red
+            if isinstance(sea1[[row, column]].content, player.game.ShipPart):
+                if sea1[[row, column]].is_open:
+                    color = orange
                 else:
-                    color = green
+                    color = gray
             else:
-                color = blue
+                if sea1[[row, column]].is_open:
+                    color = dark_blue
+                else:
+                    color = blue
             pygame.draw.rect(screen,
                              color,
                              [(margin+size)*column+margin,
@@ -68,12 +74,26 @@ def draw_board():
 
     #pygame.display.flip()
 
-
+#TODO leave player's ships and make them orange if computer hit them and AI
 def draw_put_ships_board(width, height):
-    print(width, height)
-    draw_board()
+    screen.fill(white)
+    color = blue
+
+    for row in range(10):
+        for column in range(10):
+            if isinstance(sea1[[row, column]].content, player.game.ShipPart):
+                color = gray
+            else:
+                color = blue
+            pygame.draw.rect(screen,
+                             color,
+                             [(margin+size)*column+margin,
+                              (margin+size)*row+margin,
+                              size,
+                              size])
+
     pos = pygame.mouse.get_pos()
-    pygame.draw.rect(screen, (100, 100, 100), [pos[0] - size/2,
+    pygame.draw.rect(screen, gray, [pos[0] - size/2,
                                                pos[1] - size/2,
                                                width*(size+margin),
                                                height*(size+margin)])
@@ -81,7 +101,7 @@ def draw_put_ships_board(width, height):
 
 
 def put_your_ships(new_player):
-    draw_board()
+    #draw_board()
 
     # myfont = pygame.font.SysFont("monospace", 15)
     # label = myfont.render("baba", 1, (255,0,0))
@@ -120,8 +140,8 @@ put_your_ships(player1)
 
 while True:
 
-    draw_board()
-    pygame.display.flip()
+    # draw_board()
+    # pygame.display.flip()
     # myfont = pygame.font.SysFont("monospace", 15)
     # label = myfont.render("baba", 1, (255,255,0))
     # screen.blit(label, (400, 400))
