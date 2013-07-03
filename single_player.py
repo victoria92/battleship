@@ -16,7 +16,7 @@ sea1 = player1.sea
 computer = player.Player(10, 5)
 sea2 = computer.sea
 
-player1.put_ship(3, [1, 3], 0)
+player1.put_ship(3, [0, 0], 0)
 
 
 pygame.init()
@@ -24,9 +24,6 @@ pygame.init()
 dimension = [600, 255]
 screen=pygame.display.set_mode(dimension)
 pygame.display.set_caption("Battle ship")
-
-
-done = False
 
 
 clock = pygame.time.Clock()
@@ -66,39 +63,84 @@ def draw_board():
                               size,
                               size])
 
+    pygame.display.flip()
+
+
+def put_your_ships(player):
+    draw_board()
+    ships = [2,3,3,4,5]
+
+    while ships != []:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    column = pos[0] // (size + margin)
+                    row = pos[1] // (size + margin)
+                    if(column < 10 and row < 10):
+                        player.put_ship(ships.pop(), [row, column], 0)
+
 
 turn = True
 last_turn = None
 
-while done == False:
+put_your_ships(player1)
 
+while True:
+
+    screen.fill(white)
     draw_board()
 
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
+                pygame.quit()
 
     while turn:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
+                pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 column = pos[0] // (size + margin) - 13
                 row = pos[1] // (size + margin)
-                sea2[[row, column]].open()
-                last_turn = [row, column]
-                print("Click ", pos, "Grid coordinates: ", row, column)
+                if(column < 10 and row < 10):
+                    sea2[[row, column]].open()
+                    last_turn = [row, column]
+                    #print("Click ", pos, "Grid coordinates: ", row, column)
 
-        screen.fill(white)
+                    screen.fill(white)
+                    draw_board()
 
-        draw_board()
+                    if last_turn and not isinstance(sea2[last_turn].content, player.game.ShipPart):
+                        turn = False
+                else:
+                    print("It's not your turn!")
 
-        if last_turn and not isinstance(sea2[last_turn], player.game.ShipPart):
-            turn = False
+    while not turn:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                column = pos[0] // (size + margin)
+                row = pos[1] // (size + margin)
+                if column < 10 and row < 10:
+                    sea1[[row, column]].open()
+                    last_turn = [row, column]
+                    print("Click ", pos, "Grid coordinates: ", row, column)
+
+                    screen.fill(white)
+
+                    draw_board()
+
+                    if last_turn and not isinstance(sea1[last_turn].content, player.game.ShipPart):
+                        turn = True
+                else:
+                    print("It's not your turn!")
 
     clock.tick(20)
-
-    pygame.display.flip()
 
 pygame.quit()
