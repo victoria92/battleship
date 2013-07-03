@@ -66,9 +66,9 @@ def draw_board():
     pygame.display.flip()
 
 
-def put_your_ships(player):
+def put_your_ships(new_player):
     draw_board()
-    ships = [2,3,3,4,5]
+    ships = [2]
 
     while ships != []:
         for event in pygame.event.get():
@@ -79,7 +79,12 @@ def put_your_ships(player):
                     column = pos[0] // (size + margin)
                     row = pos[1] // (size + margin)
                     if(column < 10 and row < 10):
-                        player.put_ship(ships.pop(), [row, column], 0)
+                        try:
+                            new_player.put_ship(ships.pop(), [row, column], 0)
+                        except player.game.FullSquareError:
+                            print("This place is already full")
+                        except IndexError:
+                            print("You must stay in your sea")
 
 
 turn = True
