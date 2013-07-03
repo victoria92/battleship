@@ -16,7 +16,7 @@ sea1 = player1.sea
 computer = player.Player(10, 5)
 sea2 = computer.sea
 
-player1.put_ship(3, [0, 0], 0)
+# player1.put_ship(3, [0, 0], 0)
 
 
 pygame.init()
@@ -31,6 +31,7 @@ clock = pygame.time.Clock()
 
 def draw_board():
 
+    screen.fill(white)
     color = blue
     for row in range(10):
         for column in range(10):
@@ -65,21 +66,38 @@ def draw_board():
                               size,
                               size])
 
+    #pygame.display.flip()
+
+
+def draw_put_ships_board(width, height):
+    print(width, height)
+    draw_board()
+    pos = pygame.mouse.get_pos()
+    pygame.draw.rect(screen, (100, 100, 100), [pos[0] - size/2,
+                                               pos[1] - size/2,
+                                               width*(size+margin),
+                                               height*(size+margin)])
     pygame.display.flip()
 
 
 def put_your_ships(new_player):
-    screen.fill(white)
     draw_board()
 
     # myfont = pygame.font.SysFont("monospace", 15)
     # label = myfont.render("baba", 1, (255,0,0))
     # screen.blit(label, (500, 240))
 
-    ships = [2] #add more ships
+    ships = [2,3,3,4,5] #add more ships
+    direction = 0
 
     while ships != []:
+        ship_size = [ships[-1], 1]
+
+
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                direction = 1 - direction
+            draw_put_ships_board(ship_size[direction], ship_size[1-direction])
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -88,7 +106,7 @@ def put_your_ships(new_player):
                     row = pos[1] // (size + margin)
                     if(column < 10 and row < 10):
                         try:
-                            new_player.put_ship(ships.pop(), [row, column], 0)
+                            new_player.put_ship(ships.pop(), [row, column], direction)
                         except player.game.FullSquareError:
                             print("This place is already full")
                         except IndexError:
@@ -102,10 +120,8 @@ put_your_ships(player1)
 
 while True:
 
-    screen.fill(white)
     draw_board()
-
-
+    pygame.display.flip()
     # myfont = pygame.font.SysFont("monospace", 15)
     # label = myfont.render("baba", 1, (255,255,0))
     # screen.blit(label, (400, 400))
@@ -128,8 +144,8 @@ while True:
                     last_turn = [row, column]
                     #print("Click ", pos, "Grid coordinates: ", row, column)
 
-                    screen.fill(white)
                     draw_board()
+                    pygame.display.flip()
 
                     # if last_turn and not isinstance(sea2[last_turn].content, player.game.ShipPart):
                     #     turn = False
@@ -159,9 +175,10 @@ while True:
                     last_turn = [row, column]
                     print("Click ", pos, "Grid coordinates: ", row, column)
 
-                    screen.fill(white)
 
                     draw_board()
+                    pygame.display.flip()
+
                     if last_turn:
                         if not isinstance(sea1[last_turn].content, player.game.ShipPart):
                             turn = True
