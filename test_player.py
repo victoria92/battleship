@@ -18,6 +18,11 @@ class PlayerTest(unittest.TestCase):
         victoria.put_ship(2, [2,1], 0)
         self.assertTrue(victoria.ready)
 
+    def test_check_ships(self):
+        victoria = player.Player(5, 1)
+        victoria.put_ship(1, [1,1], 0)
+        victoria.sea[[1,1]].open()
+        self.assertTrue(victoria.check_ships())
 
 if __name__ == '__main__':
     unittest.main()

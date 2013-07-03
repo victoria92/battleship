@@ -12,3 +12,9 @@ class Player:
         self.ships.append(ship)
         if len(self.ships) == self.ships_count:
             self.ready = True
+
+    def check_ships(self):
+        for ship in self.ships:
+            if not ship.is_sunk():
+                return False
+        return True
