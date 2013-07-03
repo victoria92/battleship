@@ -40,6 +40,8 @@ class Ship(pygame.sprite.Sprite):
         for coords in self.location:
             if isinstance(sea[coords].content, ShipPart):
                 raise FullSquareError
+            if not sea.is_valid_coordinates(*coords):
+                raise IndexError
         for coords in self.location:
             sea[coords] = Field(ShipPart(self))
 

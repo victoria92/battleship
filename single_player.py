@@ -105,7 +105,7 @@ while True:
                 pos = pygame.mouse.get_pos()
                 column = pos[0] // (size + margin) - 13
                 row = pos[1] // (size + margin)
-                if(column < 10 and row < 10):
+                if 0 <= column < 10 and 0 <= row < 10:
                     sea2[[row, column]].open()
                     last_turn = [row, column]
                     #print("Click ", pos, "Grid coordinates: ", row, column)
@@ -113,8 +113,17 @@ while True:
                     screen.fill(white)
                     draw_board()
 
-                    if last_turn and not isinstance(sea2[last_turn].content, player.game.ShipPart):
-                        turn = False
+                    # if last_turn and not isinstance(sea2[last_turn].content, player.game.ShipPart):
+                    #     turn = False
+
+                    if last_turn:
+                        if not isinstance(sea2[last_turn].content, player.game.ShipPart):
+                            turn = False
+                        else:
+                            if sea2[last_turn].content.is_part_of_sunk_ship():
+                                print("You destroyed this ship!")
+                            else:
+                                print("You hit it!")
                 else:
                     print("It's not your turn!")
 
@@ -135,9 +144,14 @@ while True:
                     screen.fill(white)
 
                     draw_board()
-
-                    if last_turn and not isinstance(sea1[last_turn].content, player.game.ShipPart):
-                        turn = True
+                    if last_turn:
+                        if not isinstance(sea1[last_turn].content, player.game.ShipPart):
+                            turn = True
+                        else:
+                            if sea1[last_turn].content.is_part_of_sunk_ship():
+                                print("You destroyed this ship!")
+                            else:
+                                print("You hit it!")
                 else:
                     print("It's not your turn!")
 

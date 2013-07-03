@@ -59,6 +59,10 @@ class ShipTest(unittest.TestCase):
         ship = game.Ship(3, sea, [1, 3], 0)
         self.assertRaises(game.FullSquareError, game.Ship, 3, sea, [1, 3], 0)
 
+    def test_square_out_of_range(self):
+        sea = game.Sea()
+        self.assertRaises(IndexError, game.Ship, 3, sea, [9, 9], 0)
+
 
 class SeaTest(unittest.TestCase):
     def test_create_new_sea(self):
