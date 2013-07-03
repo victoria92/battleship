@@ -26,10 +26,16 @@ class FieldTest(unittest.TestCase):
 
 
 class ShipPartTest(unittest.TestCase):
-    def is_right_initialized(self):
+    def test_is_right_initialized(self):
         sea = game.Sea()
         ship = game.Ship(3, sea, [1, 3], 0)
         self.assertEqual(sea[[1, 3]].content.ship, ship)
+
+    def test_is_part_of_sunk_ship(self):
+        sea = game.Sea()
+        ship = game.Ship(1, sea, [1, 3], 0)
+        sea[[1,3]].open()
+        self.assertTrue(sea[[1,3]].content.is_part_of_sunk_ship())
 
 
 class ShipTest(unittest.TestCase):

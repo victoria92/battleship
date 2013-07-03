@@ -24,6 +24,9 @@ class ShipPart:
     def __init__(self, ship):
         self.ship = ship
 
+    def is_part_of_sunk_ship(self):
+        return self.ship.is_sunk()
+
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self, size, sea, start, direction):
