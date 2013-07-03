@@ -28,7 +28,9 @@ pygame.display.set_caption("Battle ship")
 
 clock = pygame.time.Clock()
 
+
 def draw_board():
+
     color = blue
     for row in range(10):
         for column in range(10):
@@ -67,8 +69,14 @@ def draw_board():
 
 
 def put_your_ships(new_player):
+    screen.fill(white)
     draw_board()
-    ships = [2]
+
+    # myfont = pygame.font.SysFont("monospace", 15)
+    # label = myfont.render("baba", 1, (255,0,0))
+    # screen.blit(label, (500, 240))
+
+    ships = [2] #add more ships
 
     while ships != []:
         for event in pygame.event.get():
@@ -96,6 +104,11 @@ while True:
 
     screen.fill(white)
     draw_board()
+
+
+    # myfont = pygame.font.SysFont("monospace", 15)
+    # label = myfont.render("baba", 1, (255,255,0))
+    # screen.blit(label, (400, 400))
 
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
