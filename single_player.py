@@ -19,6 +19,7 @@ player1 = player.Player(10, 5)
 sea1 = player1.sea
 computer = player.Player(10, 5)
 sea2 = computer.sea
+
 grid1 = [[0 for i in range(10)] for i in range(10)]
 grid2 = [[0 for i in range(10)] for i in range(10)]
 
@@ -39,6 +40,7 @@ colors = {
     4: dark_blue,
     5: gray
 }
+
 
 def draw_board():
 
@@ -62,17 +64,18 @@ def draw_board():
                               size])
 
 
-#TODO leave player's ships and make them orange if computer hit them and AI
 def draw_put_ships_board(width, height):
     screen.fill(white)
     color = blue
     draw_board()
 
     pos = pygame.mouse.get_pos()
-    pygame.draw.rect(screen, gray, [pos[0] - size/2,
-                                               pos[1] - size/2,
-                                               width*(size+margin),
-                                               height*(size+margin)])
+    pygame.draw.rect(screen,
+                     gray,
+                     [pos[0] - size/2,
+                     pos[1] - size/2,
+                     width*(size+margin),
+                     height*(size+margin)])
     pygame.display.flip()
 
 
@@ -92,14 +95,14 @@ def put_one_ship(new_player, position, ship, direction):
             print("You must stay in your sea")
             return False
 
+
 def put_your_ships(new_player):
 
-    ships = [2,3,3,4,5]
+    ships = [2, 3, 3, 4, 5]
     direction = 0
 
     while ships != []:
         ship_size = [ships[-1], 1]
-
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -120,7 +123,6 @@ def player_make_move(position):
     turn = True
     column = position[0] // (size + margin) - 13
     row = position[1] // (size + margin)
-    print(row, column)
     if 0 <= column < 10 and 0 <= row < 10:
         sea2[[row, column]].open()
         if isinstance(sea2[row, column].content, player.game.ShipPart):
@@ -145,11 +147,32 @@ def player_make_move(position):
 
 
 def computer_put_his_ships():
-    player.game.Ship(5, sea2, [1,4], 0)
-    player.game.Ship(4, sea2, [2,0], 1)
-    player.game.Ship(3, sea2, [4,2], 0)
-    player.game.Ship(3, sea2, [6,4], 1)
-    player.game.Ship(2, sea2, [8,8], 0)
+    computer.put_ship(5, [1, 4], 0)
+    computer.put_ship(4, [2, 0], 1)
+    computer.put_ship(3, [4, 2], 0)
+    computer.put_ship(3, [6, 4], 1)
+    computer.put_ship(2, [8, 8], 0)
+
+
+def computer_open_cell(cell):
+    sea1[cell].open()
+    if isinstance(sea1[cell].content, player.game.ShipPart):
+        grid1[cell[0]][cell[1]] = 3
+        draw_board()
+        pygame.display.flip()
+        return False
+    else:
+        grid1[cell[0]][cell[1]] = 4
+        draw_board()
+        pygame.display.flip()
+        return True
+
+
+def find_neighbours(field):
+    return [[field[0] - 1, field[1]],
+            [field[0] + 1, field[1]],
+            [field[0], field[1] - 1],
+            [field[0], field[1] + 1]]
 
 
 def computer_make_move():
@@ -158,39 +181,66 @@ def computer_make_move():
 
     for row in range(10):
         for column in range(10):
+            fill = sea1[[row, column]].content
             if grid1[row][column] in [0, 5]:
                 closed_fields.append([row, column])
-            elif grid1[row][column] == 3 and not sea1[[row, column]].content.is_part_of_sunk_ship():
+            elif grid1[row][column] == 3 and not fill.is_part_of_sunk_ship():
                 hit_ships.append([row, column])
-#TODO if next to it is opened to open opposite
+
     for field in hit_ships:
-        neighbours = [[field[0] - 1, field[1]],
-                      [field[0] + 1, field[1]],
-                      [field[0], field[1] - 1],
-                      [field[0], field[1] + 1]]
-        for cell in neighbours:
+        neighbours = find_neighbours(field)
+        up = neighbours[0]
+        down = neighbours[1]
+        left = neighbours[2]
+        right = neighbours[3]
+
+        cell = None
+
+        if up in hit_ships and down in closed_fields:
+            cell = down
+        elif down in hit_ships and up in closed_fields:
+            cell = up
+        elif left in hit_ships and right in closed_fields:
+            cell = right
+        elif right in hit_ships and left in closed_fields:
+            cell = left
+
+        if cell:
+            return computer_open_cell(cell)
+
+    for field in hit_ships:
+        for cell in find_neighbours(field):
             if cell in closed_fields:
-                sea1[cell].open()
-                if isinstance(sea1[cell].content, player.game.ShipPart):
-                    grid1[cell[0]][cell[1]] = 3
-                    return False
-                else:
-                    grid1[cell[0]][cell[1]] = 4
-                    return True
+                return computer_open_cell(cell)
 
     move = choice(closed_fields)
-    sea1[move].open()
-    if isinstance(sea1[move].content, player.game.ShipPart):
-        grid1[move[0]][move[1]] = 3
-        return False
-    else:
-        grid1[move[0]][move[1]] = 4
-        return True
-
+    return computer_open_cell(move)
 
 
 put_your_ships(player1)
 computer_put_his_ships()
+end = False
+
+
+def win_window(winner):
+    dimension = [200, 200]
+    screen = pygame.display.set_mode(dimension)
+    pygame.display.set_caption("Winner")
+
+    if winner == player1:
+        myfont = pygame.font.SysFont("monospace", 15)
+        label = myfont.render("You win!", 1, (255, 255, 0))
+        screen.blit(label, (80, 80))
+    else:
+        myfont = pygame.font.SysFont("monospace", 15)
+        label = myfont.render("You loose!", 1, (255, 255, 0))
+        screen.blit(label, (80, 80))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
 
 while True:
 
@@ -209,6 +259,8 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 turn = player_make_move(pos)
+                if computer.check_ships():
+                    win_window(player)
 
     while not turn:
 
@@ -216,6 +268,8 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
             turn = computer_make_move()
+            if player1.check_ships():
+                win_window(computer)
 
     clock.tick(20)
 

@@ -1,6 +1,6 @@
 import unittest
-
 import game
+
 
 class FieldTest(unittest.TestCase):
     def test_check(self):
@@ -34,8 +34,8 @@ class ShipPartTest(unittest.TestCase):
     def test_is_part_of_sunk_ship(self):
         sea = game.Sea()
         ship = game.Ship(1, sea, [1, 3], 0)
-        sea[[1,3]].open()
-        self.assertTrue(sea[[1,3]].content.is_part_of_sunk_ship())
+        sea[[1, 3]].open()
+        self.assertTrue(sea[[1, 3]].content.is_part_of_sunk_ship())
 
 
 class ShipTest(unittest.TestCase):
@@ -92,14 +92,14 @@ class SeaTest(unittest.TestCase):
         ship = game.Ship(3, sea, [1, 3], 0)
         self.assertRaises(IndexError, sea.__getitem__, [1, 11])
         self.assertRaises(IndexError, sea.__getitem__, [11, 1])
-        self.assertRaises(IndexError, sea.__setitem__, [1, 11], game.ShipPart(ship))
-        self.assertRaises(IndexError, sea.__setitem__, [11, 1], game.ShipPart(ship))
+        self.assertRaises(IndexError, sea.__setitem__, [1, 11], None)
+        self.assertRaises(IndexError, sea.__setitem__, [11, 1], None)
 
     def test_representation(self):
         sea = game.Sea(3)
         game.Ship(2, sea, [1, 0], 1)
-        sea[[0,0]].open()
-        sea[[1,0]].open()
+        sea[[0, 0]].open()
+        sea[[1, 0]].open()
         self.assertEqual(sea.represent(), "N X X \nY X X \nX X X \n")
 
 
