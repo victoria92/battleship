@@ -24,5 +24,12 @@ class PlayerTest(unittest.TestCase):
         victoria.sea[[1,1]].open()
         self.assertTrue(victoria.check_ships())
 
+        nevena = player.Player(5, 2)
+        nevena.put_ship(1, [1,1], 0)
+        nevena.put_ship(1, [2,2], 0)
+        nevena.sea[[1,1]].open()
+        self.assertFalse(nevena.check_ships())
+
+
 if __name__ == '__main__':
     unittest.main()
