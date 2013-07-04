@@ -89,7 +89,11 @@ class SeaTest(unittest.TestCase):
 
     def test_raise_index_error(self):
         sea = game.Sea()
+        ship = game.Ship(3, sea, [1, 3], 0)
         self.assertRaises(IndexError, sea.__getitem__, [1, 11])
+        self.assertRaises(IndexError, sea.__getitem__, [11, 1])
+        self.assertRaises(IndexError, sea.__setitem__, [1, 11], game.ShipPart(ship))
+        self.assertRaises(IndexError, sea.__setitem__, [11, 1], game.ShipPart(ship))
 
     def test_representation(self):
         sea = game.Sea(3)
