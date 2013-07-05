@@ -30,8 +30,6 @@ screen = pygame.display.set_mode(dimension)
 pygame.display.set_caption("Battle ship")
 
 
-clock = pygame.time.Clock()
-
 colors = {
     0: blue,
     1: red,
@@ -114,9 +112,6 @@ def put_your_ships(new_player):
                     pos = pygame.mouse.get_pos()
                     if put_one_ship(new_player, pos, ships[-1], direction):
                         ships.pop()
-
-
-turn = True
 
 
 def player_make_move(position):
@@ -215,62 +210,3 @@ def computer_make_move():
 
     move = choice(closed_fields)
     return computer_open_cell(move)
-
-
-put_your_ships(player1)
-computer_put_his_ships()
-end = False
-
-
-def win_window(winner):
-    dimension = [200, 200]
-    screen = pygame.display.set_mode(dimension)
-    pygame.display.set_caption("Winner")
-
-    if winner == player1:
-        myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You win!", 1, (255, 255, 0))
-        screen.blit(label, (80, 80))
-    else:
-        myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You loose!", 1, (255, 255, 0))
-        screen.blit(label, (80, 80))
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-
-while True:
-
-    draw_board()
-    pygame.display.flip()
-
-    for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-    while turn:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                turn = player_make_move(pos)
-                if computer.check_ships():
-                    win_window(player)
-
-    while not turn:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            turn = computer_make_move()
-            if player1.check_ships():
-                win_window(computer)
-
-    clock.tick(20)
-
-pygame.quit()
