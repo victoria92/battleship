@@ -22,6 +22,7 @@ pygame.display.set_caption("Battle ship")
 size = 20
 margin = 3
 
+
 def draw_board():
 
     screen.fill(colors.white)
@@ -44,8 +45,7 @@ def draw_board():
                               size])
 
 
-
-def put_one_ship(new_player, position, ship, direction, size, margin):
+def put_one_ship(new_player, position, ship, direction):
     column = position[0] // (size + margin)
     row = position[1] // (size + margin)
     if(column < 10 and row < 10):
@@ -62,7 +62,7 @@ def put_one_ship(new_player, position, ship, direction, size, margin):
             return False
 
 
-def player_make_move(position, size, margin):
+def player_make_move(position):
     turn = True
     column = position[0] // (size + margin) - 13
     row = position[1] // (size + margin)
@@ -85,12 +85,42 @@ def player_make_move(position, size, margin):
     return turn
 
 
+def is_possible(position, size, direction):
+
+    if direction:
+        for i in range(size):
+            if position[0] + i > 9:
+                return False
+            else:
+                if sea2[[position[0] + i, position[1]]].content:
+                    return False
+        return True
+
+    else:
+        for i in range(size):
+            if position[1] + i > 9:
+                return False
+            else:
+                if sea2[[position[0], position[1] + i]].content:
+                    return False
+        return True
+
+
 def computer_put_his_ships():
-    computer.put_ship(5, [1, 4], 0)
-    computer.put_ship(4, [2, 0], 1)
-    computer.put_ship(3, [4, 2], 0)
-    computer.put_ship(3, [6, 4], 1)
-    computer.put_ship(2, [8, 8], 0)
+    ships = [2, 3, 3, 4, 5]
+
+    for size in ships:
+        possible_positions = []
+        for row in range(10):
+            for column in range(10):
+                if is_possible([row, column], size, 0):
+                    possible_positions.append((size, [row, column], 0))
+                if is_possible([row, column], size, 1):
+                    possible_positions.append((size, [row, column], 1))
+        print(possible_positions)
+        position = choice(possible_positions)
+        print(position)
+        computer.put_ship(position[0], position[1], position[2])
 
 
 def computer_open_cell(cell):
@@ -113,7 +143,7 @@ def find_neighbours(field):
             [field[0], field[1] - 1],
             [field[0], field[1] + 1]]
 
-#TODO test computer move
+
 def computer_make_move():
     closed_fields = []
     hit_ships = []

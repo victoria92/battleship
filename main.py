@@ -1,6 +1,7 @@
 import single_player
 import pygame
 import colors
+from single_player import size
 
 
 size = 20
@@ -36,7 +37,6 @@ def draw_board():
 
 
 def draw_put_ships_board(width, height):
-    #screen.fill(colors.white)
     color = colors.blue
     draw_board()
 
@@ -66,7 +66,7 @@ def put_your_ships(new_player):
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if single_player.put_one_ship(new_player, pos, ships[-1], direction, size, margin):
+                    if single_player.put_one_ship(new_player, pos, ships[-1], direction):
                         ships.pop()
 
 def win_window(winner):
@@ -110,7 +110,7 @@ while True:
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                turn = single_player.player_make_move(pos, size, margin)
+                turn = single_player.player_make_move(pos)
                 draw_board()
                 if single_player.computer.check_ships():
                     win_window(single_player.player1)
