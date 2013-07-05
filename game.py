@@ -37,10 +37,10 @@ class Ship:
         else:
             self.location = [[start[0], start[1] + x] for x in range(size)]
         for coords in self.location:
-            if isinstance(sea[coords].content, ShipPart):
-                raise FullSquareError
             if not sea.is_valid_coordinates(*coords):
                 raise IndexError
+            if isinstance(sea[coords].content, ShipPart):
+                raise FullSquareError
         for coords in self.location:
             sea[coords] = Field(ShipPart(self))
 
