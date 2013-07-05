@@ -54,11 +54,11 @@ def put_one_ship(new_player, position, ship, direction, size, margin):
             for coords in new_player.ships[-1].location:
                 grid1[coords[0]][coords[1]] = 5
             return True
-        except player.game.FullSquareError:
-            print("This place is already full")
-            return False
         except IndexError:
             print("You must stay in your sea")
+            return False
+        except player.game.FullSquareError:
+            print("This place is already full")
             return False
 
 
@@ -81,8 +81,6 @@ def player_make_move(position, size, margin):
                 print("You destroyed this ship!")
             else:
                 print("You hit it!")
-    else:
-        print("It's not your turn!")
 
     return turn
 
@@ -99,12 +97,12 @@ def computer_open_cell(cell):
     sea1[cell].open()
     if isinstance(sea1[cell].content, player.game.ShipPart):
         grid1[cell[0]][cell[1]] = 3
-        #draw_board()
+        draw_board()
         pygame.display.flip()
         return False
     else:
         grid1[cell[0]][cell[1]] = 4
-        #draw_board()
+        draw_board()
         pygame.display.flip()
         return True
 
@@ -115,7 +113,7 @@ def find_neighbours(field):
             [field[0], field[1] - 1],
             [field[0], field[1] + 1]]
 
-
+#TODO test computer move
 def computer_make_move():
     closed_fields = []
     hit_ships = []
