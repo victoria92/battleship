@@ -81,13 +81,15 @@ def win_window(winner):
     screen = pygame.display.set_mode(dimension)
     pygame.display.set_caption("Winner")
 
-    if winner == single_player.player1:
+    if winner == player1:
+        print("You won!")
         myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You win!", 1, (255, 255, 0))
+        label = myfont.render("You won!", 1, (255, 255, 0))
         screen.blit(label, (80, 80))
     else:
+        print("You lost!")
         myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You loose!", 1, (255, 255, 0))
+        label = myfont.render("You lost!", 1, (255, 255, 0))
         screen.blit(label, (80, 80))
 
     while True:
