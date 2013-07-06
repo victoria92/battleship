@@ -1,6 +1,6 @@
 import unittest
 import single_player
-from single_player import put_one_ship, player_make_move
+from single_player import put_one_ship, player_make_move, computer_make_move
 from game import ShipPart
 
 
@@ -47,6 +47,16 @@ class SinglePlayerTest(unittest.TestCase):
         self.assertEqual(grid1[4][4], 3)
         self.assertEqual(grid1[3][3], 4)
 
+    def test_closed_neighbours(self):
+        sea1 = single_player.player.game.Sea()
+        grid1 = [[0 for i in range(10)] for i in range(10)]
+        grid2 = [[0 for i in range(10)] for i in range(10)]
+        single_player.computer_open_cell([3, 3], grid1, sea1, grid2)
+        count34 = single_player.closed_neighbours([3, 4], grid1, 2)
+        count88 = single_player.closed_neighbours([9, 9], grid1, 2)
+        self.assertEqual(count34, 5)
+        self.assertEqual(count88, 4)
+
     def test_computer_make_move(self):
         player1 = single_player.player.Player(10, 2)
         sea1 = player1.sea
@@ -54,18 +64,19 @@ class SinglePlayerTest(unittest.TestCase):
         grid2 = [[0 for i in range(10)] for i in range(10)]
         put_one_ship(player1, [8, 8], 3, 0, grid1)
         single_player.computer_open_cell([0, 0], grid1, sea1, grid2)
-        self.assertTrue(single_player.computer_make_move(sea1, grid1, grid2))
+        self.assertTrue(computer_make_move(player1, sea1, grid1, grid2))
         self.assertTrue(grid1[0][1] == 3 or grid1[1][0] == 4)
-        single_player.computer_make_move(sea1, grid1, grid2)
+        computer_make_move(player1, sea1, grid1, grid2)
         self.assertTrue(grid1[0][1] == 3)
-        single_player.computer_make_move(sea1, grid1, grid2)
+        computer_make_move(player1, sea1, grid1, grid2)
         self.assertTrue(grid1[0][2] == 3)
 
     def test_computer_make_random_move(self):
         victoria = single_player.player.Player(10, 2)
+        victoria.put_ship(3, [0, 0], 0)
         grid1 = [[0 for i in range(10)] for i in range(10)]
         grid2 = [[0 for i in range(10)] for i in range(10)]
-        single_player.computer_make_move(victoria.sea, grid1, grid2)
+        computer_make_move(victoria, victoria.sea, grid1, grid2)
         sum_grid = sum([sum(row) for row in grid1])
         self.assertEqual(sum_grid, 4)
 

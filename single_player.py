@@ -1,6 +1,7 @@
 import pygame
 import player
 import colors
+from itertools import dropwhile
 from random import choice
 
 
@@ -131,7 +132,27 @@ def find_neighbours(field):
             [field[0], field[1] + 1]]
 
 
-def computer_make_move(sea1, grid1, grid2):
+def closed_neighbours(cell, grid, smallest_ship):
+    count = 0
+
+    for dif in range(-smallest_ship + 1, smallest_ship):
+        if 0 <= cell[1] + dif < 10 and grid[cell[0]][cell[1] + dif] in [0, 5]:
+            count += 1
+        if 0 <= cell[0] + dif < 10 and grid[cell[0] + dif][cell[1]] in [0, 5]:
+            count += 1
+
+    return count
+
+
+def sort_closed_fields(closed_fields, grid1, smallest_ship):
+
+    def criterion(cell):  # ne na dve mesta i testove!!!
+        return closed_neighbours(cell, grid1, smallest_ship)
+
+    return sorted(closed_fields, key=lambda cell: criterion(cell))
+
+
+def computer_make_move(player1, sea1, grid1, grid2):
     closed_fields = []
     hit_ships = []
 
@@ -169,5 +190,14 @@ def computer_make_move(sea1, grid1, grid2):
             if cell in closed_fields:
                 return computer_open_cell(cell, grid1, sea1, grid2)
 
-    move = choice(closed_fields)
-    return computer_open_cell(move, grid1, sea1, grid2)
+    def criterion(cell):
+        return closed_neighbours(cell, grid1, smallest_ship)
+
+    left_ships = filter(lambda ship: not ship.is_sunk(), player1.ships)
+    if left_ships != []:
+        smallest_ship = min([ship.size for ship in left_ships])
+        ordered = sort_closed_fields(closed_fields, grid1, smallest_ship)
+        maximum = criterion(ordered[-1])
+        choices = dropwhile(lambda cell: criterion(cell) != maximum, ordered)
+        move = choice(list(choices))
+        return computer_open_cell(move, grid1, sea1, grid2)

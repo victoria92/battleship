@@ -75,6 +75,7 @@ def put_your_ships(player1):
                     if single_player.put_one_ship(player1, pos, ships[-1], direction, grid1):
                         ships.pop()
 
+
 def win_window(winner):
     dimension = [200, 200]
     screen = pygame.display.set_mode(dimension)
@@ -126,7 +127,7 @@ while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            turn = single_player.computer_make_move(sea1, grid1, grid2)
+            turn = single_player.computer_make_move(player1, sea1, grid1, grid2)
             draw_board()
             if player1.check_ships():
                 win_window(computer)

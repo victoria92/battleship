@@ -1,6 +1,3 @@
-import pygame
-
-
 class FullSquareError(Exception):
     pass
 
