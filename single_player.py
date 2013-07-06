@@ -4,17 +4,6 @@ import colors
 from random import choice
 
 
-#size = 20
-#margin = 3
-
-player1 = player.Player(10, 5)
-sea1 = player1.sea
-computer = player.Player(10, 5)
-sea2 = computer.sea
-
-grid1 = [[0 for i in range(10)] for i in range(10)]
-grid2 = [[0 for i in range(10)] for i in range(10)]
-
 pygame.init()
 dimension = [600, 255]
 screen = pygame.display.set_mode(dimension)
@@ -23,7 +12,7 @@ size = 20
 margin = 3
 
 
-def draw_board():
+def draw_board(grid1, grid2):
 
     screen.fill(colors.white)
     for row in range(10):
@@ -45,7 +34,7 @@ def draw_board():
                               size])
 
 
-def put_one_ship(new_player, position, ship, direction):
+def put_one_ship(new_player, position, ship, direction, grid1):
     column = position[0] // (size + margin)
     row = position[1] // (size + margin)
     if(column < 10 and row < 10):
@@ -62,7 +51,7 @@ def put_one_ship(new_player, position, ship, direction):
             return False
 
 
-def player_make_move(position):
+def player_make_move(position, sea2, grid2, grid1):
     turn = True
     column = position[0] // (size + margin) - 13
     row = position[1] // (size + margin)
@@ -72,7 +61,7 @@ def player_make_move(position):
             grid2[row][column] = 1
         else:
             grid2[row][column] = 2
-        draw_board()
+        draw_board(grid1, grid2)
         pygame.display.flip()
         if grid2[row][column] == 2:
             turn = False
@@ -85,7 +74,7 @@ def player_make_move(position):
     return turn
 
 
-def is_possible(position, size, direction):
+def is_possible(position, size, direction, sea2):
 
     if direction:
         for i in range(size):
@@ -106,33 +95,31 @@ def is_possible(position, size, direction):
         return True
 
 
-def computer_put_his_ships():
+def computer_put_his_ships(computer):
     ships = [2, 3, 3, 4, 5]
 
     for size in ships:
         possible_positions = []
         for row in range(10):
             for column in range(10):
-                if is_possible([row, column], size, 0):
+                if is_possible([row, column], size, 0, computer.sea):
                     possible_positions.append((size, [row, column], 0))
-                if is_possible([row, column], size, 1):
+                if is_possible([row, column], size, 1, computer.sea):
                     possible_positions.append((size, [row, column], 1))
-        print(possible_positions)
         position = choice(possible_positions)
-        print(position)
         computer.put_ship(position[0], position[1], position[2])
 
 
-def computer_open_cell(cell):
+def computer_open_cell(cell, grid1, sea1, grid2):
     sea1[cell].open()
     if isinstance(sea1[cell].content, player.game.ShipPart):
         grid1[cell[0]][cell[1]] = 3
-        draw_board()
+        draw_board(grid1, grid2)
         pygame.display.flip()
         return False
     else:
         grid1[cell[0]][cell[1]] = 4
-        draw_board()
+        draw_board(grid1, grid2)
         pygame.display.flip()
         return True
 
@@ -144,7 +131,7 @@ def find_neighbours(field):
             [field[0], field[1] + 1]]
 
 
-def computer_make_move():
+def computer_make_move(sea1, grid1, grid2):
     closed_fields = []
     hit_ships = []
 
@@ -175,12 +162,12 @@ def computer_make_move():
             cell = left
 
         if cell:
-            return computer_open_cell(cell)
+            return computer_open_cell(cell, grid1, sea1, grid2)
 
     for field in hit_ships:
         for cell in find_neighbours(field):
             if cell in closed_fields:
-                return computer_open_cell(cell)
+                return computer_open_cell(cell, grid1, sea1, grid2)
 
     move = choice(closed_fields)
-    return computer_open_cell(move)
+    return computer_open_cell(move, grid1, sea1, grid2)

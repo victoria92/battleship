@@ -9,9 +9,15 @@ margin = 3
 end = False
 #clock = pygame.time.Clock
 
-grid1 = single_player.grid1
-grid2 = single_player.grid2
 screen = single_player.screen
+
+player1 = single_player.player.Player(10, 5)
+sea1 = player1.sea
+computer = single_player.player.Player(10, 5)
+sea2 = computer.sea
+
+grid1 = [[0 for i in range(10)] for i in range(10)]
+grid2 = [[0 for i in range(10)] for i in range(10)]
 
 
 def draw_board():
@@ -50,7 +56,7 @@ def draw_put_ships_board(width, height):
     pygame.display.flip()
 
 
-def put_your_ships(new_player):
+def put_your_ships(player1):
 
     ships = [2, 3, 3, 4, 5]
     direction = 0
@@ -66,7 +72,7 @@ def put_your_ships(new_player):
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if single_player.put_one_ship(new_player, pos, ships[-1], direction):
+                    if single_player.put_one_ship(player1, pos, ships[-1], direction, grid1):
                         ships.pop()
 
 def win_window(winner):
@@ -90,8 +96,8 @@ def win_window(winner):
 
 
 turn = True
-put_your_ships(single_player.player1)
-single_player.computer_put_his_ships()
+put_your_ships(player1)
+single_player.computer_put_his_ships(computer)
 
 
 while True:
@@ -110,20 +116,20 @@ while True:
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                turn = single_player.player_make_move(pos)
+                turn = single_player.player_make_move(pos, sea2, grid2, grid1)
                 draw_board()
-                if single_player.computer.check_ships():
-                    win_window(single_player.player1)
+                if computer.check_ships():
+                    win_window(player1)
 
     while not turn:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            turn = single_player.computer_make_move()
+            turn = single_player.computer_make_move(sea1, grid1, grid2)
             draw_board()
-            if single_player.player1.check_ships():
-                win_window(single_player.computer)
+            if player1.check_ships():
+                win_window(computer)
 
     #clock.tick(20)
 
