@@ -77,20 +77,20 @@ def put_your_ships(player1):
 
 
 def win_window(winner):
-    dimension = [200, 200]
+    dimension = [640, 465]
     screen = pygame.display.set_mode(dimension)
     pygame.display.set_caption("Winner")
 
     if winner == player1:
         print("You won!")
-        myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You won!", 1, (255, 255, 0))
-        screen.blit(label, (80, 80))
+        image = pygame.image.load(".\images\you-win.jpg")
+        screen.blit(image, (0,0))
+        pygame.display.flip()
     else:
         print("You lost!")
-        myfont = pygame.font.SysFont("monospace", 15)
-        label = myfont.render("You lost!", 1, (255, 255, 0))
-        screen.blit(label, (80, 80))
+        image = pygame.image.load(".\images\you_lost.jpg")
+        screen.blit(image, (30,100))
+        pygame.display.flip()
 
     while True:
         for event in pygame.event.get():
