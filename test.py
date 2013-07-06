@@ -103,5 +103,5 @@ class SeaTest(unittest.TestCase):
         self.assertEqual(sea.represent(), "N X X \nY X X \nX X X \n")
 
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()

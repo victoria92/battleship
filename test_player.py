@@ -31,5 +31,5 @@ class PlayerTest(unittest.TestCase):
         self.assertFalse(nevena.check_ships())
 
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()

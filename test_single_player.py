@@ -96,5 +96,5 @@ class SinglePlayerTest(unittest.TestCase):
         self.assertEqual(number_of_parts, 17)
 
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
